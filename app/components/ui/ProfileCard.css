@@ -74,7 +74,7 @@
     var(--behind-glow-color) 0%,
     transparent var(--behind-glow-size)
   );
-  filter: blur(35px) saturate(1.1);
+  filter: blur(25px) saturate(1.1);
   opacity: calc(0.85 * var(--card-opacity));
   transition: opacity 200ms ease;
 }
@@ -346,8 +346,8 @@
   align-items: center;
   justify-content: space-between;
   background: var(--pc-user-bg);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
   border: 1px solid var(--pc-border);
   border-radius: calc(
     max(0px, var(--card-radius) - var(--ui-inset) + var(--ui-radius-bias))
@@ -414,8 +414,8 @@
   cursor: pointer;
   transition: border-color 0.3s ease, transform 0.3s ease,
     background 0.3s ease, color 0.3s ease;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 .pc-contact-btn:hover {

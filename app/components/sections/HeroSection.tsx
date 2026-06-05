@@ -243,7 +243,7 @@ export default function HeroSection() {
           width: min(600px, 100%);
           height: min(600px, 100%);
           background: radial-gradient(circle, rgba(232, 98, 42, 0.12) 0%, transparent 60%);
-          filter: blur(80px);
+          filter: blur(50px);
           pointer-events: none;
           z-index: 1;
         }
