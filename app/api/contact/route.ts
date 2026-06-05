@@ -1,12 +1,19 @@
 import { NextResponse } from 'next/server';
+import { Resend } from 'resend';
 
-const EMAILJS_SERVICE_ID = 'service_1744rum';
-const EMAILJS_TEMPLATE_ID = 'template_sdewqok';
-const EMAILJS_PUBLIC_KEY = 'vAdEUTmFjKoesK7Sn';
-const EMAILJS_PRIVATE_KEY = process.env.EMAILJS_PRIVATE_KEY || '';
+const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
+const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
+
+const TO_EMAIL = 'fayakunachmadisa2010@gmail.com';
+const FROM_EMAIL = 'onboarding@resend.dev';
+const FROM_NAME = 'Fayakun Portfolio';
 
 export async function POST(request: Request) {
   try {
+    if (!resend) {
+      return NextResponse.json({ error: 'Resend API key not configured' }, { status: 500 });
+    }
+
     const body = await request.json();
     const { name, email, subject, message } = body;
 
@@ -14,25 +21,25 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        service_id: EMAILJS_SERVICE_ID,
-        template_id: EMAILJS_TEMPLATE_ID,
-        user_id: EMAILJS_PUBLIC_KEY,
-        accessToken: EMAILJS_PRIVATE_KEY,
-        template_params: { name, email, subject, message },
-      }),
+    const { error } = await resend.emails.send({
+      from: `${FROM_NAME} <${FROM_EMAIL}>`,
+      to: TO_EMAIL,
+      replyTo: email,
+      subject: `[Portfolio Contact] ${subject || 'New Message'} — ${name}`,
+      text: `Name: ${name}\nEmail: ${email}\nSubject: ${subject || '(no subject)'}\n\nMessage:\n${message}`,
     });
 
-    if (!response.ok) {
-      const text = await response.text();
-      return NextResponse.json({ error: text }, { status: response.status });
+    if (error) {
+      console.error('Resend error:', error);
+      return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
     return NextResponse.json({ success: true });
-  } catch {
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  } catch (err) {
+    console.error('Contact route error:', err);
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : 'Internal server error' },
+      { status: 500 }
+    );
   }
 }

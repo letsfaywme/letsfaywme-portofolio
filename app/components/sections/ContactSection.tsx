@@ -61,13 +61,14 @@ const SOCIALS = [
   { href: "https://instagram.com/letsfaywme", label: "Instagram" },
 ];
 
-function Toast({ visible, onDismiss }: { visible: boolean; onDismiss: () => void }) {
+function Toast({ visible, type, onDismiss }: { visible: boolean; type: 'success' | 'error'; onDismiss: () => void }) {
+  const isError = type === 'error';
   useEffect(() => {
     if (visible) {
-      const t = setTimeout(onDismiss, 4000);
+      const t = setTimeout(onDismiss, isError ? 6000 : 4000);
       return () => clearTimeout(t);
     }
-  }, [visible, onDismiss]);
+  }, [visible, onDismiss, isError]);
 
   return (
     <AnimatePresence>
@@ -79,7 +80,8 @@ function Toast({ visible, onDismiss }: { visible: boolean; onDismiss: () => void
           transition={{ duration: 0.4, ease }}
           style={{
             position: 'fixed', top: '6rem', right: '1.5rem', zIndex: 9999,
-            background: 'var(--surface)', border: '1px solid var(--success-border)',
+            background: 'var(--surface)',
+            border: `1px solid var(${isError ? '--orange' : '--success-border'})`,
             borderRadius: 14, padding: '0.85rem 1.25rem',
             boxShadow: '0 16px 40px var(--shadow-color)',
             display: 'flex', alignItems: 'center', gap: '0.75rem',
@@ -90,19 +92,23 @@ function Toast({ visible, onDismiss }: { visible: boolean; onDismiss: () => void
         >
           <motion.svg
             width="18" height="18" viewBox="0 0 24 24"
-            fill="none" stroke="var(--success)" strokeWidth="2.5"
+            fill="none" stroke={isError ? 'var(--orange)' : 'var(--success)'} strokeWidth="2.5"
             initial={{ pathLength: 0, rotate: -90, opacity: 0 }}
             animate={{ pathLength: 1, rotate: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5, ease }}
           >
-            <path d="M5 12l5 5L20 7" />
+            {isError ? (
+              <path d="M6 6l12 12M18 6L6 18" />
+            ) : (
+              <path d="M5 12l5 5L20 7" />
+            )}
           </motion.svg>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem' }}>
             <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--text)', lineHeight: 1.3 }}>
-              Message sent
+              {isError ? 'Failed to send' : 'Message sent'}
             </span>
             <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: 1.3 }}>
-              Thanks for reaching out! I&apos;ll reply within 24h.
+              {isError ? 'Please try again or contact me directly.' : 'Thanks for reaching out! I\'ll reply within 24h.'}
             </span>
           </div>
           <button
@@ -126,7 +132,7 @@ function Toast({ visible, onDismiss }: { visible: boolean; onDismiss: () => void
 
 export default function ContactSection() {
   const [sending, setSending] = useState(false);
-  const [toastVisible, setToastVisible] = useState(false);
+  const [toast, setToast] = useState<{ visible: boolean; type: 'success' | 'error' }>({ visible: false, type: 'success' });
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -145,11 +151,17 @@ export default function ContactSection() {
           message: formData.get("message"),
         }),
       });
-      if (!res.ok) throw new Error('Failed to send');
+      if (!res.ok) {
+        const text = await res.text().catch(() => '');
+        console.error('Contact API error:', { status: res.status, statusText: res.statusText, body: text });
+        setToast({ visible: true, type: 'error' });
+        return;
+      }
       form.reset();
-      setToastVisible(true);
-    } catch {
-      setToastVisible(true);
+      setToast({ visible: true, type: 'success' });
+    } catch (err) {
+      console.error('Contact fetch error:', err);
+      setToast({ visible: true, type: 'error' });
     } finally {
       setSending(false);
     }
@@ -373,7 +385,7 @@ export default function ContactSection() {
         }
       `}</style>
 
-      <Toast visible={toastVisible} onDismiss={() => setToastVisible(false)} />
+      <Toast visible={toast.visible} type={toast.type} onDismiss={() => setToast({ visible: false, type: 'success' })} />
 
       <section id="contact" className="section-container">
         <div className="section-wrap">

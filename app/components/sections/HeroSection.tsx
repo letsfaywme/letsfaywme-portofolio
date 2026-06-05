@@ -87,6 +87,7 @@ export default function HeroSection() {
           max-width: 1300px;
           margin: 1rem auto 0;
           position: relative;
+          overflow: hidden;
         }
 
         .hero-pretitle {
