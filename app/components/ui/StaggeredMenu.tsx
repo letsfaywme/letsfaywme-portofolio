@@ -328,6 +328,25 @@ const StaggeredMenu = ({
   }, [playClose, animateHamburger, animateColor, onMenuClose]);
 
   useEffect(() => {
+    const scrollY = window.scrollY;
+    if (open) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      if (open) window.scrollTo(0, scrollY);
+    };
+  }, [open]);
+
+  useEffect(() => {
     if (!closeOnClickAway || !open) return;
 
     const handleClickOutside = (event: MouseEvent) => {
