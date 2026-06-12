@@ -172,8 +172,26 @@ export default function Cursor({
 
     tickerFnRef.current = tickerFn;
 
-    const moveHandler = (e: MouseEvent) => moveCursor(e.clientX, e.clientY);
+    const updateCursorVisibility = (x: number, y: number) => {
+      const mapEl = document.querySelector('.loc-map');
+      let hidden = false;
+      if (mapEl) {
+        const rect = mapEl.getBoundingClientRect();
+        hidden = x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+      }
+      gsap.to(cursor, { opacity: hidden ? 0 : 1, duration: 0.15, overwrite: 'auto' });
+    };
+
+    const moveHandler = (e: MouseEvent) => {
+      moveCursor(e.clientX, e.clientY);
+      updateCursorVisibility(e.clientX, e.clientY);
+    };
     window.addEventListener('mousemove', moveHandler);
+
+    const docLeaveHandler = () => {
+      gsap.to(cursor, { opacity: 0, duration: 0.15 });
+    };
+    document.documentElement.addEventListener('mouseleave', docLeaveHandler);
 
     const scrollHandler = () => {
       if (!activeTarget || !cursorRef.current) return;
@@ -341,6 +359,7 @@ export default function Cursor({
       }
 
       window.removeEventListener('mousemove', moveHandler);
+      document.documentElement.removeEventListener('mouseleave', docLeaveHandler);
       window.removeEventListener('mouseover', enterHandler);
       window.removeEventListener('scroll', scrollHandler);
       window.removeEventListener('resize', resizeHandler);
