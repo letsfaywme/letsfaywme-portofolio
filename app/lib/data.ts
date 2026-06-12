@@ -340,10 +340,49 @@ export const PROJECTS = [
     demoUrl: "https://letsfaywme.github.io/Lumos/",
     repoUrl: "https://github.com/letsfaywme/Lumos",
   },
+  {
+    id: 5,
+    image: "/duta-edukasi.png",
+    color: "linear-gradient(135deg,#0a1628 0%,#1a2a3a 100%)",
+    accentColor: "rgba(59,130,246,0.45)",
+    categories: ["all", "web", "platform"],
+    tags: ["React", "Education", "Platform"],
+    name: "Duta Edukasi",
+    description:
+      "An educational platform designed to connect students with learning resources, mentorship, and collaborative tools. Built with a modern stack to deliver a seamless and engaging learning experience.",
+    demoUrl: "https://duta-edukasi.netlify.app/",
+    repoUrl: "https://github.com/letsfaywme/Duta-Edukasi",
+  },
+  {
+    id: 6,
+    image: "/bookshelf.png",
+    color: "linear-gradient(135deg,#1a1200 0%,#3a2a00 100%)",
+    accentColor: "rgba(255,183,77,0.45)",
+    categories: ["all", "web"],
+    tags: ["JavaScript", "localStorage", "CRUD"],
+    name: "Bookshelf App",
+    description:
+      "A book tracking app to log books you've read, complete with author names and last-read dates. Features login, sign in, and the ability to edit or delete book entries, all stored via localStorage.",
+    demoUrl: "https://bookshelf-app-seven-nu.vercel.app/",
+    repoUrl: "https://github.com/fayakun258714-creator/Bookshelf-App",
+  },
+  {
+    id: 7,
+    image: "/note-app.png",
+    color: "linear-gradient(135deg,#0a1a2a 0%,#0a2a1a 100%)",
+    accentColor: "rgba(72,187,120,0.45)",
+    categories: ["all", "web"],
+    tags: ["JavaScript", "localStorage", "CRUD"],
+    name: "Note App",
+    description:
+      "A note-taking website for diary entries and important notes, complete with dates and content. Includes login, sign in, and the ability to edit or delete notes, all stored via localStorage.",
+    demoUrl: "https://bookshelf-app-seven-nu.vercel.app/",
+    repoUrl: "https://github.com/fayakun258714-creator/note-app-dbs",
+  },
 ];
 
 export const STATS = [
-  { num: "12", suffix: "+", label: "Projects Shipped" },
+  { num: "15", suffix: "+", label: "Projects Shipped" },
   { num: "8", suffix: "+", label: "Happy Clients" },
   { num: "1", suffix: "+", label: "Years Active" },
 ];

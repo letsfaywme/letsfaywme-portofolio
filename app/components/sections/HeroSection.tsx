@@ -117,11 +117,10 @@ export default function HeroSection() {
           font-size: clamp(4.5rem, 14vw, 11rem);
           font-weight: 700;
           letter-spacing: -0.045em;
-          line-height: 0.88;
+          line-height: 1.2;
           color: var(--text);
           margin-bottom: 2rem;
           display: flex;
-          overflow: hidden;
           cursor: default;
         }
         .hero-name__text {
