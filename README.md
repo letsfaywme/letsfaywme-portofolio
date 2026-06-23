@@ -1,97 +1,66 @@
-# Fayakun - Portfolio
+# Fayakun · Portofolio
 
-A modern, interactive portfolio website built with Next.js. Features 3D-like transitions, WebGL ray effects, smooth scroll animations, and a premium glassmorphism design system.
+A premium interactive portfolio — built with Next.js 16, featuring WebGL ray effects, custom cursor, smooth animations, and a dark/light theme system.
+
+**Live → [letsfaywme.my.id](https://letsfaywme.my.id)**
 
 ---
 
-## Tech Stack
+## Stack
 
-| Category | Technology |
-|---|---|
+| Area | |
+|------|---|
 | Framework | Next.js 16 (App Router, Turbopack) |
 | Language | TypeScript |
 | Styling | Tailwind CSS v4 + CSS custom properties |
-| Animations | Framer Motion, GSAP |
-| WebGL | ogl (SideRays background effect) |
+| Animation | Framer Motion, GSAP |
+| WebGL | ogl (hero rays) |
 | Fonts | Syne, DM Sans, JetBrains Mono |
-| Icons | Lucide React, React Icons |
-| 3D | Three.js |
-| Maps | react-map-gl / MapLibre |
-| Email | EmailJS (via server API route) |
+| Icons | React Icons |
+| Email | Resend |
 
 ---
 
-## Features
-
-- **Loader** - Animated intro with staggered letter reveal and progress bar
-- **Hero** - Typewriter effect, WebGL ray backdrop, gradient text with mouse-driven glow
-- **Navbar** - Pill navigation with active indicator, theme toggle, mobile staggered menu
-- **About** - Profile card, stats counter, scroll-revealed content
-- **Skills** - Categorized skill tags with icons
-- **Experience** - Timeline-style work history
-- **Projects** - Filterable grid with hover overlays and live demo / source links
-- **Certificates** - Scrollable certificate cards
-- **Testimonials** - Client feedback carousel
-- **Location** - Interactive map
-- **Contact** - Form with server-side EmailJS proxy
-- **Theme** - Dark/light mode with persistent localStorage
-- **Cursor** - Custom cursor component
-- **Scroll** - Progress bar, scroll-triggered reveals, parallax transforms
-- **Error Boundary** - Graceful error handling with refresh fallback
-
----
-
-## Getting Started
+## Running Locally
 
 ```bash
-# Install
 npm install
-
-# Dev server
-npm run dev
-
-# Production build
-npm run build
-
-# Start production
-npm run start
-
-# Lint
-npm run lint
+npm run dev       # dev server
+npm run build     # production build
+npm run start     # serve production
+npm run lint      # lint
 ```
 
 ---
 
-## Project Structure
+## Env
+
+```env
+RESEND_API_KEY=re_xxx
+```
+
+---
+
+## Structure
 
 ```
 app/
-  api/contact/         EmailJS API route
+  api/contact/        Resend email API
   components/
-    layout/            Navbar, Footer
-    sections/          Hero, About, Skills, etc.
-    ui/                Reusable UI components
-  hooks/               Custom React hooks
-  lib/                 Data & utilities
-  globals.css          Global styles & CSS variables
-  layout.tsx           Root layout
-  page.tsx             Home page
-public/                Static assets
-lib/                   Shared utilities (cn)
-```
-
----
-
-## Environment
-
-Create a `.env` file in the root:
-
-```
-EMAILJS_PRIVATE_KEY=your_private_key_here
+    layout/           Navbar, Footer
+    sections/         Hero, About, Skills, Projects, etc.
+    ui/               Reusable components
+  hooks/              Custom React hooks
+  lib/                Data & utilities
+  globals.css         Global styles & CSS variables
+  layout.tsx          Root layout
+  page.tsx            Home page
+  icon.svg            Favicon
+public/               Static assets
 ```
 
 ---
 
 ## Credits
 
-Designed and built by [Fayakun](https://github.com/letsfaywme).
+Designed & built by [Fayakun](https://github.com/letsfaywme).

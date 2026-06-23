@@ -9,12 +9,12 @@ export const viewport: Viewport = { themeColor: "#0d0c0a" };
 
 export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/icon.svg", type: "image/svg+xml" }],
-  title: "Fayakun — Project Manager & Web Developer",
+  title: "Fayakun • Portofolio",
   description: "Premium portfolio of Fayakun, a Project Manager & Web Developer crafting elegant digital experiences with modern technologies.",
   keywords: ["Project Manager", "Web Developer", "Next.js", "React", "Indonesia"],
   authors: [{ name: "Fayakun" }],
   openGraph: {
-    title: "Fayakun — PM & Web Dev",
+    title: "Fayakun • Portofolio",
     description: "Turning complex ideas into elegant digital products.",
     type: "website",
     locale: "en_US",
