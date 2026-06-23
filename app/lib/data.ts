@@ -201,6 +201,13 @@ export const EXPERIENCES = [
 
 export const CERTIFICATES = [
   {
+    issuer: "ASEAN",
+    name: "AI Class ASEAN",
+    date: "Completed 2026",
+    url: "certificates/AIClassASEAN.pdf",
+    image: "/asean.png",
+  },
+  {
     issuer: "Dicoding Indonesia",
     name: "Belajar Dasar Cloud dan Gen AI di AWS",
     date: "Completed 2026",
@@ -253,6 +260,18 @@ export const CERTIFICATES = [
     name: "Belajar Membuat Aplikasi Web dengan React",
     date: "Completed 2026",
     url: "certificates/React.pdf",
+  },
+  {
+    issuer: "Dicoding Indonesia",
+    name: "Memulai Pemrograman dengan Python",
+    date: "Completed 2026",
+    url: "certificates/Memulai Pemrograman dengan Python.pdf",
+  },
+  {
+    issuer: "Dicoding Indonesia",
+    name: "Spec-Driven Development dengan Kiro",
+    date: "Completed 2026",
+    url: "certificates/Spec-Driven Development dengan Kiro.pdf",
   },
 ];
 

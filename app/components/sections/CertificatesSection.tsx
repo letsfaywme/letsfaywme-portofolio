@@ -29,7 +29,8 @@ export default function CertificatesSection() {
           border-radius: var(--r-lg);
           overflow: hidden;
           transition: transform 0.5s var(--ease), border-color 0.5s var(--ease), box-shadow 0.5s var(--ease);
-          display: block;
+          display: flex;
+          flex-direction: column;
           text-decoration: none;
           color: inherit;
         }
@@ -127,7 +128,7 @@ export default function CertificatesSection() {
           transform: rotate(45deg) scale(1.05);
         }
 
-        .cert-body { padding: 1.5rem; }
+        .cert-body { padding: 1.5rem; display: flex; flex-direction: column; flex: 1; }
         .cert-issuer {
           font-family: var(--font-mono);
           font-size: 0.7rem;
@@ -153,6 +154,7 @@ export default function CertificatesSection() {
           display: flex;
           align-items: center;
           gap: 0.5rem;
+          margin-top: auto;
         }
         .cert-date::before {
           content: '';
@@ -211,7 +213,7 @@ export default function CertificatesSection() {
                   <div className="cert-paper">
                     <div className="cert-paper-stripe" />
                     <Image
-                      src="/dicoding.png"
+                      src={cert.image || "/dicoding.png"}
                       alt={`${cert.issuer} certificate`}
                       width={1158}
                       height={846}

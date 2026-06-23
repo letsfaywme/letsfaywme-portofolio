@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import "./globals.css";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
@@ -9,6 +8,7 @@ const geist = Geist({subsets:['latin'],variable:'--font-sans',preload:false});
 export const viewport: Viewport = { themeColor: "#0d0c0a" };
 
 export const metadata: Metadata = {
+  icons: [{ rel: "icon", url: "/icon.svg", type: "image/svg+xml" }],
   title: "Fayakun — Project Manager & Web Developer",
   description: "Premium portfolio of Fayakun, a Project Manager & Web Developer crafting elegant digital experiences with modern technologies.",
   keywords: ["Project Manager", "Web Developer", "Next.js", "React", "Indonesia"],
@@ -45,7 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" data-theme="dark" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
       <head>
-        <Script id="theme-init" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script id="theme-init" dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>
         <a href="#main-content" className="skip-link">
