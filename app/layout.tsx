@@ -26,27 +26,10 @@ export const metadata: Metadata = {
   },
 };
 
-const themeScript = `
-(function () {
-  try {
-    var stored = window.localStorage.getItem('fayakun-theme');
-    var theme = stored;
-    if (theme !== 'light' && theme !== 'dark') {
-      theme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-    }
-    document.documentElement.setAttribute('data-theme', theme);
-  } catch (e) {
-    document.documentElement.setAttribute('data-theme', 'dark');
-  }
-})();
-`;
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
-      <head>
-        <script id="theme-init" dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
+    <html lang="en" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
+      <head />
       <body>
         <a href="#main-content" className="skip-link">
           Skip to content

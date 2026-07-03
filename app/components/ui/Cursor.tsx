@@ -389,10 +389,6 @@ export default function Cursor({
     }
   }, [spinDuration, isMobile]);
 
-  if (isMobile) {
-    return null;
-  }
-
   return (
     <div ref={cursorRef} className="target-cursor-wrapper">
       <style>{`
