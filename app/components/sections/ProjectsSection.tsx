@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Reveal from "@/app/components/ui/Reveal";
 import { PROJECTS } from "@/app/lib/data";
@@ -29,6 +29,17 @@ const GithubIcon = () => (
 export default function ProjectsSection() {
   const [activeFilter, setActiveFilter] = useState("all");
   const filtered = PROJECTS.filter((p) => p.categories.includes(activeFilter));
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    carouselRef.current?.scrollTo({ left: 0, behavior: "smooth" });
+  }, [activeFilter]);
+
+  function scrollCarousel(dir: number) {
+    if (!carouselRef.current) return;
+    const w = carouselRef.current.clientWidth;
+    carouselRef.current.scrollBy({ left: w * dir, behavior: "smooth" });
+  }
 
   return (
     <>
@@ -68,14 +79,28 @@ export default function ProjectsSection() {
           z-index: -1;
         }
 
-        .projects-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 1fr));
-          gap: 1.5rem;
+        .projects-carousel-wrap {
+          position: relative;
         }
+        .projects-carousel {
+          display: flex;
+          overflow-x: auto;
+          scroll-snap-type: x mandatory;
+          gap: 1.5rem;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+          padding: 0.25rem 0 1rem;
+          scroll-padding: 0 1rem;
+          -webkit-mask-image: linear-gradient(to right, #000 0%, #000 90%, transparent 100%);
+          mask-image: linear-gradient(to right, #000 0%, #000 90%, transparent 100%);
+        }
+        .projects-carousel::-webkit-scrollbar { display: none; }
         .project-card {
           display: flex;
           flex-direction: column;
+          flex: 0 0 calc(100% - 3rem);
+          min-width: 320px;
+          scroll-snap-align: start;
           position: relative;
           background: var(--surface);
           border: 1px solid var(--border);
@@ -214,21 +239,57 @@ export default function ProjectsSection() {
           transform-origin: left;
         }
         .project-link svg { width: 13px; height: 13px; }
+        .carousel-arrow {
+          position: absolute;
+          top: 50%;
+          z-index: 5;
+          width: 44px; height: 44px;
+          border-radius: 50%;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          color: var(--text-muted);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: all 0.35s var(--ease);
+          transform: translateY(-50%);
+        }
+        .carousel-arrow:hover {
+          border-color: var(--orange);
+          color: var(--orange);
+          background: var(--orange-dim);
+        }
+        .carousel-arrow:disabled {
+          opacity: 0;
+          pointer-events: none;
+        }
+        .carousel-prev { left: 0.5rem; }
+        .carousel-next { right: 0.5rem; }
 
-        @media (max-width: 700px) {
-          .projects-grid { grid-template-columns: 1fr; gap: 1rem; }
+        @media (min-width: 768px) {
+          .project-card { flex: 0 0 calc(50% - 1.5rem); }
+        }
+        @media (min-width: 1100px) {
+          .project-card { flex: 0 0 calc(33.33% - 1.5rem); }
+        }
+        @media (max-width: 767px) {
+          .carousel-arrow { display: none; }
         }
         @media (max-width: 480px) {
-          .project-body { padding: 1.25rem 1.25rem 1.5rem; }
-          .project-name { font-size: 1.2rem; }
-          .project-desc { font-size: 0.85rem; }
-          .project-links { gap: 1rem; }
+          .project-card { flex: 0 0 calc(100% - 2rem); min-width: 0; }
+          .project-body { padding: 1rem 1.1rem 1.25rem; }
+          .project-name { font-size: 1.1rem; margin-bottom: 0.35rem; }
+          .project-desc { font-size: 0.82rem; }
+          .project-links { gap: 0.85rem; padding-top: 1rem; margin-top: 1rem; }
+          .project-tags { margin-bottom: 0.6rem; gap: 0.35rem; }
+          .project-tag { font-size: 0.62rem; padding: 0.15rem 0.5rem; }
         }
       `}</style>
 
       <section id="projects" className="section-container">
         <div className="section-wrap">
-          <div className="section-index">05 / Selected Work</div>
+          <div className="section-index">06 / Selected Work</div>
 
           <div className="section-header">
             <Reveal>
@@ -266,22 +327,21 @@ export default function ProjectsSection() {
             </div>
           </Reveal>
 
-          <motion.div className="projects-grid" layout>
-            <AnimatePresence mode="popLayout">
-              {filtered.map((project, i) => (
-                <motion.div
-                  key={project.id}
-                  className="project-card"
-                  layout
-                  initial={{ opacity: 0, y: 40, filter: "blur(10px)", scale: 0.97 }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95, filter: "blur(6px)" }}
-                  transition={{
-                    duration: 0.7,
-                    delay: i * 0.08,
-                    ease,
-                    layout: { duration: 0.5, ease },
-                  }}
+          <div className="projects-carousel-wrap">
+            <div className="projects-carousel" ref={carouselRef}>
+              <AnimatePresence mode="popLayout">
+                {filtered.map((project, i) => (
+                  <motion.div
+                    key={project.id}
+                    className="project-card"
+                    initial={{ opacity: 0, y: 40, filter: "blur(10px)", scale: 0.97 }}
+                    animate={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95, filter: "blur(6px)" }}
+                    transition={{
+                      duration: 0.7,
+                      delay: i * 0.08,
+                      ease,
+                    }}
                 >
                   <div className="project-thumb">
                     <Image
@@ -332,7 +392,14 @@ export default function ProjectsSection() {
                 </motion.div>
               ))}
             </AnimatePresence>
-          </motion.div>
+          </div>
+          <button className="carousel-arrow carousel-prev" onClick={() => scrollCarousel(-1)} aria-label="Previous">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button className="carousel-arrow carousel-next" onClick={() => scrollCarousel(1)} aria-label="Next">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
         </div>
       </section>
     </>

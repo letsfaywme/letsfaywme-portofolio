@@ -1,11 +1,16 @@
 "use client";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Reveal from "@/app/components/ui/Reveal";
 import { EXPERIENCES } from "@/app/lib/data";
 
 const ease = [0.22, 1, 0.36, 1] as const;
+const VISIBLE_LIMIT = 2;
 
 export default function ExperienceSection() {
+  const [showAll, setShowAll] = useState(false);
+  const visible = showAll ? EXPERIENCES : EXPERIENCES.slice(0, VISIBLE_LIMIT);
+
   return (
     <>
       <style>{`
@@ -74,6 +79,27 @@ export default function ExperienceSection() {
           max-width: 56ch;
           font-weight: 300;
         }
+        .exp-toggle {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          margin-top: 1.5rem;
+          padding: 0.55rem 1.2rem;
+          background: transparent;
+          border: 1px solid var(--border);
+          border-radius: 99px;
+          font-size: 0.8rem;
+          font-weight: 500;
+          color: var(--text-muted);
+          cursor: pointer;
+          transition: all 0.35s var(--ease);
+          width: fit-content;
+        }
+        .exp-toggle:hover {
+          border-color: var(--orange);
+          color: var(--orange);
+          background: var(--orange-dim);
+        }
 
         @media (max-width: 900px) {
           .exp-layout { grid-template-columns: 1fr; gap: 2.5rem; }
@@ -82,10 +108,17 @@ export default function ExperienceSection() {
           .exp-item { grid-template-columns: 120px 1fr; gap: 1.5rem; padding: 1.75rem 0; }
         }
         @media (max-width: 640px) {
-          .exp-item { grid-template-columns: 1fr; gap: 0.35rem; padding: 1.5rem 0; }
-          .exp-role { font-size: clamp(1.15rem, 4.5vw, 1.3rem); }
-          .exp-desc { font-size: 0.88rem; }
-          .exp-period { font-size: 0.72rem; }
+          .exp-item { grid-template-columns: 1fr; gap: 0.2rem; padding: 1.25rem 0; }
+          .exp-role { font-size: clamp(1.1rem, 4.5vw, 1.25rem); margin-bottom: 0.2rem; }
+          .exp-desc {
+            font-size: 0.85rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+          .exp-period { font-size: 0.68rem; }
+          .exp-company { margin-bottom: 0.5rem; font-size: 0.85rem; }
         }
         @media (max-width: 480px) {
           .exp-layout { gap: 1.5rem; }
@@ -99,7 +132,7 @@ export default function ExperienceSection() {
 
       <section id="experience" className="section-container">
         <div className="section-wrap">
-          <div className="section-index">04 / Experience</div>
+          <div className="section-index">05 / Experience</div>
 
           <div className="exp-layout">
             <div>
@@ -120,7 +153,7 @@ export default function ExperienceSection() {
             </div>
 
             <div className="exp-list">
-              {EXPERIENCES.map((exp, i) => (
+              {visible.map((exp, i) => (
                 <Reveal key={exp.role + exp.company} delay={i * 0.12}>
                   <div className="exp-item">
                     <motion.div
@@ -140,6 +173,11 @@ export default function ExperienceSection() {
                   </div>
                 </Reveal>
               ))}
+              {EXPERIENCES.length > VISIBLE_LIMIT && (
+                <button className="exp-toggle" onClick={() => setShowAll(!showAll)}>
+                  {showAll ? "← Show less" : `Show all ${EXPERIENCES.length} experiences →`}
+                </button>
+              )}
             </div>
           </div>
         </div>

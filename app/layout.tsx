@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
+import SmoothScroll from "./components/SmoothScroll";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans',preload:false});
 
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
+        <SmoothScroll />
         {children}
       </body>
     </html>

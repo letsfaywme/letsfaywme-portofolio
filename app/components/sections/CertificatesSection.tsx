@@ -181,7 +181,7 @@ export default function CertificatesSection() {
 
       <section id="certificates" className="section-container">
         <div className="section-wrap">
-          <div className="section-index">06 / Credentials</div>
+          <div className="section-index">07 / Credentials</div>
 
           <div className="section-header">
             <Reveal>

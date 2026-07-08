@@ -136,7 +136,7 @@ export default function LocationSection() {
 
       <section id="location" className="section-container">
         <div className="section-wrap">
-          <div className="section-index">08 / Based In</div>
+          <div className="section-index">09 / Based In</div>
 
           <div className="loc-layout">
             <Reveal>

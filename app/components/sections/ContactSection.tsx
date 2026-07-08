@@ -42,9 +42,9 @@ const SOCIAL_ICONS: Record<string, ReactElement> = {
       <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z" />
     </svg>
   ),
-  "Twitter/X": (
+  Discord: (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+      <path d="M20.32 4.85a18.8 18.8 0 0 0-4.64-1.44.07.07 0 0 0-.08.04c-.2.36-.42.83-.57 1.2a17.32 17.32 0 0 0-5.2 0 9.3 9.3 0 0 0-.58-1.2.08.08 0 0 0-.08-.04A18.72 18.72 0 0 0 4.66 4.85a.07.07 0 0 0-.03.03C2.1 8.8 1.4 12.64 1.73 16.42v.04a.08.08 0 0 0 .03.06A18.75 18.75 0 0 0 7.1 19.72a.08.08 0 0 0 .09-.01 13.2 13.2 0 0 0 1.13-1.83.08.08 0 0 0-.04-.1 12.34 12.34 0 0 1-1.73-.83.08.08 0 0 1-.02-.13l.34-.27a.07.07 0 0 1 .07-.01c3.65 1.66 7.59 1.66 11.2 0a.07.07 0 0 1 .08.01l.33.27a.08.08 0 0 1-.01.14 11.9 11.9 0 0 1-1.74.82.08.08 0 0 0-.04.1c.35.65.75 1.26 1.13 1.83a.08.08 0 0 0 .09.01 18.7 18.7 0 0 0 5.37-3.2.08.08 0 0 0 .03-.06c.39-4.32-.68-8.13-2.82-11.54a.05.05 0 0 0-.03-.02zM8.8 14.12c-1.05 0-1.92-.96-1.92-2.14s.84-2.15 1.92-2.15c1.09 0 1.96.97 1.93 2.15 0 1.18-.84 2.14-1.93 2.14zm6.4 0c-1.06 0-1.92-.96-1.92-2.14s.84-2.15 1.92-2.15c1.09 0 1.96.97 1.93 2.15 0 1.18-.84 2.14-1.93 2.14z" />
     </svg>
   ),
   Instagram: (
@@ -57,7 +57,7 @@ const SOCIAL_ICONS: Record<string, ReactElement> = {
 const SOCIALS = [
   { href: "https://github.com/letsfaywme", label: "GitHub" },
   { href: "https://www.linkedin.com/in/fayakun-achamd-isa-378a043a5/", label: "LinkedIn" },
-  { href: "https://twitter.com/fayakun", label: "Twitter/X" },
+  { href: "https://discord.com/users/letsfaywme_", label: "Discord" },
   { href: "https://instagram.com/letsfaywme", label: "Instagram" },
 ];
 
@@ -389,7 +389,7 @@ export default function ContactSection() {
 
       <section id="contact" className="section-container">
         <div className="section-wrap">
-          <div className="section-index">09 / Get in Touch</div>
+          <div className="section-index">10 / Get in Touch</div>
 
           <div className="section-header" style={{ marginBottom: "3.5rem" }}>
             <Reveal>

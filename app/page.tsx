@@ -7,6 +7,7 @@ import Footer from "@/app/components/layout/Footer";
 import HeroSection from "@/app/components/sections/HeroSection";
 import AboutSection from "@/app/components/sections/AboutSection";
 import SkillsSection from "@/app/components/sections/SkillsSection";
+import EducationSection from "@/app/components/sections/EducationSection";
 import ExperienceSection from "@/app/components/sections/ExperienceSection";
 import CertificatesSection from "@/app/components/sections/CertificatesSection";
 import TestimonialsSection from "@/app/components/sections/TestimonialsSection";
@@ -27,6 +28,7 @@ export default function Home() {
         <HeroSection />
         <AboutSection />
         <SkillsSection />
+        <EducationSection />
         <ExperienceSection />
         <CertificatesSection />
         <TestimonialsSection />

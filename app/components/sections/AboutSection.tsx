@@ -87,6 +87,18 @@ export default function AboutSection() {
           .about-card-wrap { max-width: 260px; }
           .about-body { font-size: 0.95rem; }
         }
+        .about-card-wrap .pc-avatar-content {
+          z-index: 10;
+        }
+        .about-card-wrap .pc-card-wrapper:hover {
+          --card-scale: 1.06;
+        }
+        .about-card-wrap .pc-card {
+          transition: transform 0.15s ease-out, box-shadow 0.3s ease, background 0.3s ease;
+        }
+        .about-card-wrap .pc-avatar-content .avatar {
+          transform: translateX(-50%) translateZ(0);
+        }
       `}</style>
 
       <section id="about" className="section-container">
@@ -108,6 +120,7 @@ export default function AboutSection() {
                   enableMobileTilt={false}
                   mobileTiltSensitivity={2.5}
                   behindGlowEnabled={false}
+                  innerGradient="transparent"
                   onContactClick={() => {
                     document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
                   }}

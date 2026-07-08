@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import { NAV_LINKS, SOCIAL_LINKS } from '@/app/lib/data';
 import { useActiveSection } from '@/app/hooks/useActiveSection';
@@ -9,13 +9,51 @@ import StaggeredMenu from '@/app/components/ui/StaggeredMenu';
 const PillNav = dynamic(() => import('@/app/components/ui/PillNav'), { ssr: false });
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
   const active = useActiveSection();
+  const extraRef = useRef<HTMLDivElement>(null);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', handler, { passive: true });
     return () => window.removeEventListener('scroll', handler);
+  }, []);
+
+  useEffect(() => {
+    const THRESHOLD = 200;
+    const LERP = 0.1;
+    let targetX = 0, currentX = 0, rafId: number;
+
+    const measure = () => {
+      const el = extraRef.current;
+      const pill = document.querySelector('.pill-nav-container');
+      const parent = el?.parentElement;
+      if (!el || !pill || !parent) return;
+      const pr = parent.getBoundingClientRect();
+      const naturalLeft = pr.left + parent.clientWidth - 40 - el.offsetWidth;
+      const maxShift = naturalLeft - (pill.getBoundingClientRect().right + 12);
+      targetX = -maxShift * Math.min(1, window.scrollY / THRESHOLD);
+    };
+
+    const tick = () => {
+      currentX += (targetX - currentX) * LERP;
+      const el = extraRef.current;
+      if (el) el.style.transform = `translateY(-50%) translateX(${currentX}px)`;
+      if (Math.abs(currentX - targetX) > 0.5) rafId = requestAnimationFrame(tick);
+      else currentX = targetX;
+    };
+
+    const onScroll = () => { measure(); cancelAnimationFrame(rafId); rafId = requestAnimationFrame(tick); };
+
+    measure();
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', measure);
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', measure);
+    };
   }, []);
 
   const items = NAV_LINKS.map((link) => ({
@@ -65,6 +103,7 @@ export default function Navbar() {
           align-items: center;
           gap: 0.25rem;
           flex-shrink: 0;
+          will-change: transform;
         }
         .pill-nav-extra .staggered-menu-wrapper {
           --sm-accent: var(--orange, #e8622a);
@@ -95,6 +134,7 @@ export default function Navbar() {
           .pill-nav-extra {
             position: static;
             transform: none;
+            right: auto;
           }
           .pill-nav-inner .pill-nav-container {
             flex: initial;
@@ -114,7 +154,7 @@ export default function Navbar() {
             pillTextColor="var(--nav-pill-text)"
             initialLoadAnimation={false}
           />
-          <div className="pill-nav-extra">
+          <div className="pill-nav-extra" ref={extraRef}>
             <ThemeToggle />
             <StaggeredMenu
               position="right"

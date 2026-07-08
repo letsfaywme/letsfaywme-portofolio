@@ -106,6 +106,20 @@ import {
 
 import { IconType } from "react-icons";
 
+export type AchievementType = "regular" | "leadership" | "award";
+
+export type SchoolAchievement = {
+  text: string;
+  type: AchievementType;
+};
+
+export type School = {
+  period: string;
+  school: string;
+  major?: string;
+  achievements: SchoolAchievement[];
+};
+
 export type SkillTag = {
   name: string;
   icon: IconType;
@@ -115,6 +129,7 @@ export type SkillTag = {
 export const NAV_LINKS = [
   { href: "#about", label: "About" },
   { href: "#skills", label: "Skills" },
+  { href: "#education", label: "Education" },
   { href: "#experience", label: "Experience" },
   { href: "#projects", label: "Projects" },
   { href: "#contact", label: "Contact" },
@@ -164,6 +179,43 @@ export const SKILL_ROWS: {
       { name: "Lazy Loading", icon: FaHourglassHalf },
       { name: "GPU Animation", icon: FaMicrochip },
       { name: "Accessibility", icon: FaUniversalAccess },
+    ],
+  },
+];
+
+export const SCHOOLS: School[] = [
+  {
+    period: "2016 - 2022",
+    school: "SD Negeri Medono 08",
+    achievements: [
+      { text: "Aktif dalam ekstrakurikuler olahraga", type: "leadership" },
+      { text: "Ketua kelas", type: "leadership" },
+    ],
+  },
+  {
+    period: "2022 - 2025",
+    school: "SMP Negeri 13 Pekalongan",
+    achievements: [
+      { text: "Ketua OSIS 2024–2025", type: "leadership" },
+      { text: "Pratama Putra 2023–2024", type: "leadership" },
+      { text: "Aktif ekstrakurikuler Paskibra sebagai koordinator", type: "leadership" },
+      { text: "Komandan Pleton Terbaik Tingkat Kota Pekalongan 2024", type: "award" },
+      { text: "Pemimpin Upacara Terbaik Tingkat Kota Pekalongan 2024", type: "award" },
+      { text: "Pramuka Garuda Kota Pekalongan 2024", type: "award" },
+      { text: "Juara 1 Lomba MAPSI cabang Rebana Tingkat Kota Pekalongan", type: "award" },
+      { text: "TOP 10 Lulusan Terbaik", type: "award" },
+    ],
+  },
+  {
+    period: "2025 - Present",
+    school: "SMK Negeri 1 Kandeman",
+    major: "Rekayasa Perangkat Lunak",
+    achievements: [
+      { text: "Aktif dalam ekstrakurikuler PKS Yuana Bhakti", type: "leadership" },
+      { text: "Top 10 Grand Finalis Duta GenRe Kabupaten Batang 2025", type: "award" },
+      { text: "Cohort Student Coding Camp 2026 by Dicoding Indonesia", type: "award" },
+      { text: "Juara 3 Kreanova bidang Teknologi 2026 Tingkat Kabupaten Batang", type: "award" },
+      { text: "Mendirikan bisnis startup \"Tiga Searah\" sebagai Project Manager", type: "leadership" },
     ],
   },
 ];

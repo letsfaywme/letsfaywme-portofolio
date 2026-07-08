@@ -46,7 +46,7 @@ const getContainingBlockOffset = (block: HTMLElement | null) => {
 };
 
 export default function Cursor({
-  targetSelector = 'a, button, input, textarea, select, .project-card, .cert-card, .testi-card, .contact-card, .exp-item, .t-pill, .nav-link, .hamburger, .theme-toggle, .nav-cta, .footer-back',
+  targetSelector = 'a, button, input, textarea, select, .project-card, .cert-card, .testi-card, .contact-card, .exp-item, .t-pill, .sv-pill, .nav-link, .hamburger, .theme-toggle, .nav-cta, .footer-back',
   spinDuration = 2,
   hideDefaultCursor = true,
   hoverDuration = 0.2,

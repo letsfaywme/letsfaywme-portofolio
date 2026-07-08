@@ -107,7 +107,7 @@ export default function TestimonialsSection() {
 
       <section id="testimonials" className="section-container">
         <div className="section-wrap">
-          <div className="section-index">07 / Kind Words</div>
+          <div className="section-index">08 / Kind Words</div>
 
           <div className="section-header">
             <Reveal>
