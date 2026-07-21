@@ -3,7 +3,10 @@ import { useState } from "react";
 import Reveal from "@/app/components/ui/Reveal";
 import { SCHOOLS } from "@/app/lib/data";
 
-function visibleAchievements(achievements: typeof SCHOOLS[number]['achievements'], expanded: boolean) {
+function visibleAchievements(
+  achievements: (typeof SCHOOLS)[number]["achievements"],
+  expanded: boolean,
+) {
   const LIMIT = 3;
   return expanded ? achievements : achievements.slice(0, LIMIT);
 }
@@ -176,7 +179,8 @@ export default function EducationSection() {
         }
         .ach-less:hover { color: var(--orange); }
         .ach-orange {
-          background: rgba(232, 98, 42, 0.07);
+          background: rgba(232, 98, 42, 0.07)
+          ;
           border: 1px solid rgba(232, 98, 42, 0.18);
           color: var(--orange-light);
         }
@@ -260,7 +264,8 @@ export default function EducationSection() {
             </div>
             <Reveal delay={0.2}>
               <p className="section-intro">
-                The foundation that shaped me — from a curious kid to a builder and leader.
+                The foundation that shaped me — from a curious kid to a builder
+                and leader.
               </p>
             </Reveal>
           </div>
@@ -270,41 +275,56 @@ export default function EducationSection() {
               const expanded = expandedSchool === i;
               const hidden = s.achievements.length - 3;
               return (
-              <Reveal key={s.school} delay={i * 0.15}>
-                <div className="edu-item" data-side={i % 2 === 0 ? "left" : "right"} data-index={i}>
-                  <div className="edu-item__dot" />
-                  <div className="edu-item__connect" />
-                  <div className="edu-item__card">
-                    <div className="edu-item__year">{s.period}</div>
-                    <h3 className="edu-item__name">{s.school}</h3>
-                    {s.major && <div className="edu-item__major">{s.major}</div>}
-                    <div className="edu-item__achievements">
-                      {visibleAchievements(s.achievements, expanded).map((a) =>
-                        a.type === "regular" ? (
-                          <span key={a.text} className="ach-regular">{a.text}</span>
-                        ) : (
+                <Reveal key={s.school} delay={i * 0.15}>
+                  <div
+                    className="edu-item"
+                    data-side={i % 2 === 0 ? "left" : "right"}
+                    data-index={i}
+                  >
+                    <div className="edu-item__dot" />
+                    <div className="edu-item__connect" />
+                    <div className="edu-item__card">
+                      <div className="edu-item__year">{s.period}</div>
+                      <h3 className="edu-item__name">{s.school}</h3>
+                      {s.major && (
+                        <div className="edu-item__major">{s.major}</div>
+                      )}
+                      <div className="edu-item__achievements">
+                        {visibleAchievements(s.achievements, expanded).map(
+                          (a) =>
+                            a.type === "regular" ? (
+                              <span key={a.text} className="ach-regular">
+                                {a.text}
+                              </span>
+                            ) : (
+                              <span
+                                key={a.text}
+                                className={`ach-chip ${a.type === "leadership" ? "ach-orange" : "ach-amber"}`}
+                              >
+                                {a.text}
+                              </span>
+                            ),
+                        )}
+                        {!expanded && hidden > 0 && (
                           <span
-                            key={a.text}
-                            className={`ach-chip ${a.type === "leadership" ? "ach-orange" : "ach-amber"}`}
+                            className="ach-more"
+                            onClick={() => setExpandedSchool(i)}
                           >
-                            {a.text}
+                            +{hidden} more
                           </span>
-                        )
-                      )}
-                      {!expanded && hidden > 0 && (
-                        <span className="ach-more" onClick={() => setExpandedSchool(i)}>
-                          +{hidden} more
-                        </span>
-                      )}
-                      {expanded && (
-                        <span className="ach-less" onClick={() => setExpandedSchool(null)}>
-                          ← Show less
-                        </span>
-                      )}
+                        )}
+                        {expanded && (
+                          <span
+                            className="ach-less"
+                            onClick={() => setExpandedSchool(null)}
+                          >
+                            ← Show less
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Reveal>
+                </Reveal>
               );
             })}
           </div>

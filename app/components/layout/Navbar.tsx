@@ -133,7 +133,7 @@ export default function Navbar() {
           }
           .pill-nav-extra {
             position: static;
-            transform: none;
+            transform: none !important;
             right: auto;
           }
           .pill-nav-inner .pill-nav-container {
