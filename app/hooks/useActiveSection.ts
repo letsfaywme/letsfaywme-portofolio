@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-const SECTIONS = ['about','skills','experience','certificates','testimonials','projects','location','contact'];
+const SECTIONS = ['about','skills','education','experience','certificates','testimonials','projects','location','contact'];
 
 export function useActiveSection() {
   const [active, setActive] = useState('');

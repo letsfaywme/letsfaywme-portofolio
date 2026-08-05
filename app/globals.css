@@ -130,16 +130,17 @@ body {
   font-family: var(--font-body);
   line-height: 1.65;
   overflow-x: hidden;
-  cursor: none;
   letter-spacing: 0.005em;
   transition: background-color 0.4s var(--ease), color 0.4s var(--ease);
 }
+
+* { cursor: none !important; }
 
 ::selection { background: var(--orange); color: #0b0a08; }
 ::-moz-selection { background: var(--orange); color: #0b0a08; }
 
 @media (hover: none) {
-  body { cursor: auto; }
+  * { cursor: auto !important; }
   .gradual-blur { display: none !important; }
 }
 
@@ -891,6 +892,7 @@ main { position: relative; z-index: 1; overflow-x: hidden; }
   .pill-item { transition: none !important; }
   .target-cursor-wrapper { display: none !important; }
   .gradual-blur { opacity: 0 !important; }
+  * { cursor: auto !important; }
 }
 
 /* Touch: increase tap targets on interactive elements */

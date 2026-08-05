@@ -1,5 +1,6 @@
 'use client';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { gsap } from 'gsap';
 import './StaggeredMenu.css';
 
@@ -50,12 +51,18 @@ const StaggeredMenu = ({
   const [open, setOpen] = useState(false);
   const openRef = useRef(false);
   const panelRef = useRef<HTMLDivElement>(null);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
   const preLayersRef = useRef<HTMLDivElement>(null);
   const preLayerElsRef = useRef<HTMLElement[]>([]);
   const hamburgerTopRef = useRef<HTMLSpanElement>(null);
   const hamburgerMidRef = useRef<HTMLSpanElement>(null);
   const hamburgerBotRef = useRef<HTMLSpanElement>(null);
   const iconRef = useRef<HTMLSpanElement>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const openTlRef = useRef<gsap.core.Timeline | null>(null);
   const closeTweenRef = useRef<gsap.core.Tween | null>(null);
@@ -66,6 +73,7 @@ const StaggeredMenu = ({
   const itemEntranceTweenRef = useRef<gsap.core.Tween | null>(null);
 
   useLayoutEffect(() => {
+    if (!mounted) return;
     const ctx = gsap.context(() => {
       const panel = panelRef.current;
       const preContainer = preLayersRef.current;
@@ -85,7 +93,7 @@ const StaggeredMenu = ({
       if (toggleBtnRef.current) gsap.set(toggleBtnRef.current, { color: menuButtonColor });
     });
     return () => ctx.revert();
-  }, [menuButtonColor, position]);
+  }, [menuButtonColor, position, mounted]);
 
   const buildOpenTimeline = useCallback(() => {
     const panel = panelRef.current;
@@ -301,7 +309,13 @@ const StaggeredMenu = ({
     }
   }, [changeMenuColorOnOpen, menuButtonColor, openMenuButtonColor]);
 
-  const toggleMenu = useCallback(() => {
+  const toggleMenu = useCallback((e?: React.MouseEvent | React.PointerEvent) => {
+    if (touchStartRef.current && e) {
+      const dx = Math.abs(e.clientX - touchStartRef.current.x);
+      const dy = Math.abs(e.clientY - touchStartRef.current.y);
+      touchStartRef.current = null;
+      if (dx > 10 || dy > 10) return;
+    }
     const target = !openRef.current;
     openRef.current = target;
     setOpen(target);
@@ -328,21 +342,18 @@ const StaggeredMenu = ({
   }, [playClose, animateHamburger, animateColor, onMenuClose]);
 
   useEffect(() => {
-    const scrollY = window.scrollY;
     if (open) {
+      const scrollY = window.scrollY;
       document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.left = '0';
-      document.body.style.right = '0';
+      document.documentElement.style.overflow = 'hidden';
+      document.body.dataset.scrollY = String(scrollY);
     }
     return () => {
       document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.left = '';
-      document.body.style.right = '';
-      if (open) window.scrollTo(0, scrollY);
+      document.documentElement.style.overflow = '';
+      const scrollY = document.body.dataset.scrollY;
+      delete document.body.dataset.scrollY;
+      if (scrollY) window.scrollTo(0, Number(scrollY));
     };
   }, [open]);
 
@@ -373,25 +384,14 @@ const StaggeredMenu = ({
       data-position={position}
       data-open={open || undefined}
     >
-      <div ref={preLayersRef} className="sm-prelayers" aria-hidden="true">
-        {(() => {
-          const raw = colors && colors.length ? colors.slice(0, 4) : ['#1e1e22', '#35353c'];
-          let arr = [...raw];
-          if (arr.length >= 3) {
-            const mid = Math.floor(arr.length / 2);
-            arr.splice(mid, 1);
-          }
-          return arr.map((c, i) => <div key={i} className="sm-prelayer" style={{ background: c }} />);
-        })()}
-      </div>
-
       <button
         ref={toggleBtnRef}
         className="sm-toggle"
         aria-label={open ? 'Close menu' : 'Open menu'}
         aria-expanded={open}
         aria-controls="staggered-menu-panel"
-        onClick={toggleMenu}
+        onClick={(e) => toggleMenu(e)}
+        onPointerDown={(e) => { touchStartRef.current = { x: e.clientX, y: e.clientY }; }}
         type="button"
       >
         <span ref={iconRef} className="sm-hamburger" aria-hidden="true">
@@ -401,57 +401,75 @@ const StaggeredMenu = ({
         </span>
       </button>
 
-      <aside id="staggered-menu-panel" ref={panelRef} className="staggered-menu-panel" aria-hidden={!open}>
-        <button className="sm-close-btn" onClick={() => closeMenu()} aria-label="Close menu" type="button">
-          <span className="sm-close-line" />
-          <span className="sm-close-line" />
-        </button>
-        <div className="sm-panel-inner">
-          <ul className="sm-panel-list" role="list" data-numbering={displayItemNumbering || undefined}>
-            {items && items.length ? (
-              items.map((it, idx) => (
-                <li className="sm-panel-itemWrap" key={it.label + idx}>
-                  <a
-                    className="sm-panel-item"
-                    href={it.link}
-                    aria-label={it.ariaLabel}
-                    data-index={idx + 1}
-                    onClick={() => closeMenu()}
-                  >
-                    <span className="sm-panel-itemLabel">{it.label}</span>
-                  </a>
-                </li>
-              ))
-            ) : (
-              <li className="sm-panel-itemWrap" aria-hidden="true">
-                <span className="sm-panel-item">
-                  <span className="sm-panel-itemLabel">No items</span>
-                </span>
-              </li>
-            )}
-          </ul>
-          {displaySocials && socialItems && socialItems.length > 0 && (
-            <div className="sm-socials" aria-label="Social links">
-              <h3 className="sm-socials-title">Socials</h3>
-              <ul className="sm-socials-list" role="list">
-                {socialItems.map((s, i) => (
-                  <li key={s.label + i} className="sm-socials-item">
-                    <a
-                      href={s.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="sm-socials-link"
-                      onClick={() => closeMenu()}
-                    >
-                      {s.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+      {mounted &&
+        createPortal(
+          <>
+            <div ref={preLayersRef} className="sm-prelayers" aria-hidden="true">
+              {(() => {
+                const raw = colors && colors.length ? colors.slice(0, 4) : ['#1e1e22', '#35353c'];
+                let arr = [...raw];
+                if (arr.length >= 3) {
+                  const mid = Math.floor(arr.length / 2);
+                  arr.splice(mid, 1);
+                }
+                return arr.map((c, i) => <div key={i} className="sm-prelayer" style={{ background: c }} />);
+              })()}
             </div>
-          )}
-        </div>
-      </aside>
+
+            <aside id="staggered-menu-panel" ref={panelRef} className="staggered-menu-panel" aria-hidden={!open}>
+              <button className="sm-close-btn" onClick={() => closeMenu()} aria-label="Close menu" type="button">
+                <span className="sm-close-line" />
+                <span className="sm-close-line" />
+              </button>
+              <div className="sm-panel-inner">
+                <ul className="sm-panel-list" role="list" data-numbering={displayItemNumbering || undefined}>
+                  {items && items.length ? (
+                    items.map((it, idx) => (
+                      <li className="sm-panel-itemWrap" key={it.label + idx}>
+                        <a
+                          className="sm-panel-item"
+                          href={it.link}
+                          aria-label={it.ariaLabel}
+                          data-index={idx + 1}
+                          onClick={() => closeMenu()}
+                        >
+                          <span className="sm-panel-itemLabel">{it.label}</span>
+                        </a>
+                      </li>
+                    ))
+                  ) : (
+                    <li className="sm-panel-itemWrap" aria-hidden="true">
+                      <span className="sm-panel-item">
+                        <span className="sm-panel-itemLabel">No items</span>
+                      </span>
+                    </li>
+                  )}
+                </ul>
+                {displaySocials && socialItems && socialItems.length > 0 && (
+                  <div className="sm-socials" aria-label="Social links">
+                    <h3 className="sm-socials-title">Socials</h3>
+                    <ul className="sm-socials-list" role="list">
+                      {socialItems.map((s, i) => (
+                        <li key={s.label + i} className="sm-socials-item">
+                          <a
+                            href={s.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="sm-socials-link"
+                            onClick={() => closeMenu()}
+                          >
+                            {s.label}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </aside>
+          </>,
+          document.body
+        )}
     </div>
   );
 };
