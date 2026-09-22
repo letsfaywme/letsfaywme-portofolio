@@ -18,6 +18,12 @@
   flex-shrink: 0;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .parallax > div { transform: none !important; white-space: normal; }
+  .parallax > div > span[aria-hidden="true"] { display: none; }
+  .parallax .sv-pills { flex-wrap: wrap; justify-content: center; }
+}
+
 @media (min-width: 768px) {
   .scroller {
     font-size: 5rem;

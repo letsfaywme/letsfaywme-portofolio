@@ -76,18 +76,14 @@ const SideRays = ({
   }, []);
 
   useEffect(() => {
-    if (!isVisible || !containerRef.current) return;
+    if (!isVisible || !containerRef.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     if (cleanupFunctionRef.current) {
       cleanupFunctionRef.current();
       cleanupFunctionRef.current = null;
     }
 
-    const initializeWebGL = async () => {
-      if (!containerRef.current) return;
-
-      await new Promise(resolve => setTimeout(resolve, 10));
-
+    const initializeWebGL = () => {
       if (!containerRef.current) return;
 
       const renderer = new Renderer({
@@ -205,7 +201,7 @@ void main() {
       };
 
       const loop = (t: number) => {
-        if (!rendererRef.current || !uniformsRef.current || !meshRef.current) return;
+        if (document.hidden || !rendererRef.current || !uniformsRef.current || !meshRef.current) return;
         uniforms.iTime.value = t * 0.001;
         try {
           renderer.render({ scene: mesh });
@@ -215,9 +211,14 @@ void main() {
         }
       };
 
+      const handleVisibility = () => {
+        if (animationIdRef.current !== null) cancelAnimationFrame(animationIdRef.current);
+        animationIdRef.current = document.hidden ? null : requestAnimationFrame(loop);
+      };
+      document.addEventListener('visibilitychange', handleVisibility);
       window.addEventListener('resize', updateSize);
       updateSize();
-      animationIdRef.current = requestAnimationFrame(loop);
+      handleVisibility();
 
       cleanupFunctionRef.current = () => {
         if (animationIdRef.current) {
@@ -225,6 +226,7 @@ void main() {
           animationIdRef.current = null;
         }
         window.removeEventListener('resize', updateSize);
+        document.removeEventListener('visibilitychange', handleVisibility);
         if (renderer) {
           try {
             const loseCtx = renderer.gl.getExtension('WEBGL_lose_context');

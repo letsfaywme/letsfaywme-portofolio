@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Reveal from "@/app/components/ui/Reveal";
 import StaggerGroup from "@/app/components/ui/StaggerGroup";
-import { CERTIFICATES } from "@/app/lib/data";
+import { ACHIEVEMENTS, CERTIFICATES } from "@/app/lib/data";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -17,6 +17,109 @@ export default function CertificatesSection() {
   return (
     <>
       <style>{`
+        .achievements { margin-bottom: clamp(3rem, 6vw, 5rem); }
+        .credentials-subheading {
+          font-family: var(--font-display);
+          font-size: clamp(1.25rem, 2.5vw, 1.65rem);
+          font-weight: 600;
+          color: var(--text);
+          letter-spacing: -0.025em;
+          margin: 0 0 1.5rem;
+          display: flex;
+          align-items: center;
+          gap: 1.25rem;
+        }
+        .credentials-subheading::after {
+          content: '';
+          flex: 1;
+          height: 1px;
+          background: var(--border);
+        }
+        .achievements-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 1.25rem;
+        }
+        .achievement-card {
+          --medal: #dca574;
+          --medal-dark: #714522;
+          --medal-glow: rgba(220, 165, 116, 0.10);
+          position: relative;
+          min-width: 0;
+          padding: clamp(1.5rem, 3vw, 2.5rem);
+          border: 1px solid var(--border);
+          border-top: 2px solid var(--medal);
+          border-radius: var(--r-lg);
+          background: radial-gradient(ellipse at 100% 0%, var(--medal-glow), transparent 65%), var(--surface);
+          display: flex;
+          flex-direction: column;
+          overflow-wrap: anywhere;
+        }
+        .achievement-card[data-medal="silver"] {
+          --medal: #c3cedb;
+          --medal-dark: #4a5b70;
+          --medal-glow: rgba(195, 206, 219, 0.10);
+        }
+        .achievement-top {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 1rem;
+          margin-bottom: 2rem;
+        }
+        .achievement-award { display: flex; align-items: center; gap: 0.85rem; }
+        .achievement-medal {
+          width: 52px;
+          height: 52px;
+          flex-shrink: 0;
+          display: grid;
+          place-items: center;
+          border-radius: 50%;
+          border: 1px solid var(--medal);
+          background: linear-gradient(135deg, #fff3df, var(--medal) 45%, var(--medal-dark));
+          color: #211c18;
+          box-shadow: inset 0 0 0 4px var(--medal-dark), inset 0 0 0 5px var(--medal);
+        }
+        .achievement-rank { color: var(--text); font-weight: 600; font-size: 1.05rem; }
+        .achievement-year {
+          font-family: var(--font-mono);
+          font-size: 0.8rem;
+          color: var(--text-sub);
+          padding: 0.4rem 0.75rem;
+          border: 1px solid var(--border);
+          border-radius: 100px;
+        }
+        .achievement-project {
+          font-family: var(--font-display);
+          font-size: clamp(2rem, 4vw, 3rem);
+          font-weight: 600;
+          line-height: 1.1;
+          letter-spacing: -0.04em;
+          color: var(--text);
+          margin: 0 0 0.75rem;
+        }
+        .achievement-description { color: var(--text-sub); font-size: 0.95rem; line-height: 1.65; margin: 0 0 2rem; max-width: 38ch; }
+        .achievement-details { margin-top: auto; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+        .achievement-competition { color: var(--text); font-size: 0.95rem; line-height: 1.65; margin: 0 0 0.75rem; }
+        .achievement-scope { color: var(--text-sub); font-family: var(--font-mono); font-size: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .achievement-scope::before { content: ''; width: 5px; height: 5px; flex-shrink: 0; border-radius: 50%; background: var(--medal); }
+        @media (max-width: 700px) {
+          .achievements-grid { grid-template-columns: minmax(0, 1fr); }
+        }
+        @media (prefers-reduced-motion: no-preference) {
+          @supports (animation-timeline: view()) {
+            .achievement-card {
+              animation: achievement-reveal linear both;
+              animation-timeline: view();
+              animation-range: entry 0% entry 90%;
+            }
+          }
+        }
+        @keyframes achievement-reveal {
+          from { opacity: 0; transform: translateY(18px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
         .certs-grid {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
@@ -187,17 +290,45 @@ export default function CertificatesSection() {
             <Reveal>
               <div className="section-label">Credentials</div>
               <h2 className="section-heading">
-                Certificates &amp; <em>learning</em>.
+                Certificates &amp; <em>achievements</em>.
               </h2>
             </Reveal>
             <Reveal delay={0.15}>
               <p className="section-intro" style={{ marginBottom: 0 }}>
-                Continuous learning is part of the practice — these are
-                credentials earned along the way.
+                From continuous learning to award-winning projects — milestones
+                earned by putting ideas into practice.
               </p>
             </Reveal>
           </div>
 
+          <section className="achievements" aria-labelledby="achievements-heading">
+            <h3 id="achievements-heading" className="credentials-subheading">Current Achievements</h3>
+            <div className="achievements-grid">
+              {ACHIEVEMENTS.map((achievement) => (
+                <article key={achievement.project} className="achievement-card" data-medal={achievement.medal} lang="id" aria-labelledby={`achievement-${achievement.project}`}>
+                  <div className="achievement-top">
+                    <div className="achievement-award">
+                      <span className="achievement-medal" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M8 3h8v5a4 4 0 0 1-8 0V3ZM8 5H5v2a4 4 0 0 0 4 4m7-6h3v2a4 4 0 0 1-4 4M12 12v5m-4 4h8m-6-4h4v4h-4z" />
+                        </svg>
+                      </span>
+                      <span className="achievement-rank">Juara {achievement.rank}</span>
+                    </div>
+                    <time className="achievement-year" dateTime={achievement.year}>{achievement.year}</time>
+                  </div>
+                  <h4 id={`achievement-${achievement.project}`} className="achievement-project">{achievement.project}</h4>
+                  <p className="achievement-description">{achievement.description}</p>
+                  <div className="achievement-details">
+                    <p className="achievement-competition">{achievement.competition}</p>
+                    <div className="achievement-scope">{achievement.scope}</div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <h3 className="credentials-subheading">Certificates &amp; Learning</h3>
           <StaggerGroup className="certs-grid" stagger={0.05} delay={0.15} y={24} duration={0.7}>
             {CERTIFICATES.map((cert) => (
               <motion.a

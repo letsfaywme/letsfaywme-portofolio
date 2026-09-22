@@ -73,8 +73,6 @@ function VelocityText({
   const dirRef = useRef(1);
   const vfRef = useRef(0);
   const posRef = useRef(0);
-  const pausedRef = useRef(false);
-  pausedRef.current = paused;
 
   useEffect(() => {
     const unsub = velocityFactor.on('change', (v: number) => { vfRef.current = v });
@@ -88,15 +86,18 @@ function VelocityText({
   }
 
   useEffect(() => {
+    const element = scrollerRef.current;
+    if (!element || paused || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     let rafId: number;
     let prevTime: number | null = null;
+    let visible = false;
 
     function tick(time: number) {
       if (prevTime === null) prevTime = time;
-      const delta = time - prevTime;
+      const delta = Math.min(time - prevTime, 50);
       prevTime = time;
 
-      if (!pausedRef.current) {
+      {
         const vf = vfRef.current;
         if (vf < 0) dirRef.current = -1;
         else if (vf > 0) dirRef.current = 1;
@@ -113,14 +114,28 @@ function VelocityText({
       rafId = requestAnimationFrame(tick);
     }
 
-    rafId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafId);
-  }, [baseVelocity, copyWidth]);
+    const updatePlayback = () => {
+      cancelAnimationFrame(rafId);
+      prevTime = null;
+      if (visible && !document.hidden) rafId = requestAnimationFrame(tick);
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      updatePlayback();
+    });
+    observer.observe(element);
+    document.addEventListener('visibilitychange', updatePlayback);
+    return () => {
+      cancelAnimationFrame(rafId);
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', updatePlayback);
+    };
+  }, [baseVelocity, copyWidth, paused]);
 
   const spans = [];
   for (let i = 0; i < numCopies; i++) {
     spans.push(
-      <span className={className} key={i} ref={i === 0 ? copyRef : null}>
+      <span className={className} key={i} ref={i === 0 ? copyRef : null} aria-hidden={i > 0 ? true : undefined}>
         {children}&nbsp;
       </span>
     );

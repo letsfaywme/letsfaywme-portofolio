@@ -54,7 +54,7 @@ export default function SkillsSection() {
               <ScrollVelocity
                 paused={hoveredIndex === index}
                 texts={[(
-                  <span className={`sv-pills sv-${row.accent}`}>
+                  <span key={row.number} className={`sv-pills sv-${row.accent}`}>
                     {row.items.map((s) => {
                       const Icon = s.icon;
                       return (

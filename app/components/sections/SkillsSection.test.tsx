@@ -1,8 +1,10 @@
-import { describe, it, expect, beforeEach, afterEach } from "vitest"
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest"
 import { render, screen, cleanup } from "@testing-library/react"
 import SkillsSection from "./SkillsSection"
 
 beforeEach(() => {
+  vi.stubGlobal('matchMedia', () => ({ matches: false }))
+  vi.stubGlobal('IntersectionObserver', class { observe() {} disconnect() {} })
   document.documentElement.style.setProperty("--orange", "#e8622a")
   document.documentElement.style.setProperty("--orange-light", "#f07a45")
   document.documentElement.style.setProperty("--amber", "#d4853a")
@@ -18,6 +20,7 @@ beforeEach(() => {
 
 afterEach(() => {
   cleanup()
+  vi.unstubAllGlobals()
 })
 
 describe("SkillsSection", () => {

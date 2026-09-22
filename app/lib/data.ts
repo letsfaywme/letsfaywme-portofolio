@@ -141,47 +141,47 @@ export const SKILL_ROWS: {
   accent: "orange" | "amber";
   items: SkillTag[];
 }[] = [
-  {
-    number: "01",
-    label: "Stack",
-    accent: "orange",
-    items: [
-      { name: "HTML5", icon: FaHtml5 },
-      { name: "CSS3", icon: FaCss3Alt },
-      { name: "JavaScript", icon: SiJavascript },
-      { name: "TypeScript", icon: SiTypescript },
-      { name: "Python", icon: FaPython },
-      { name: "C# / .NET", icon: SiDotnet },
-      { name: "React", icon: SiReact },
-      { name: "Next.js", icon: SiNextdotjs },
-      { name: "Vue.js", icon: SiVuedotjs },
-      { name: "Vite", icon: SiVite },
-      { name: "Node.js", icon: SiNodedotjs },
-      { name: "Tailwind CSS", icon: SiTailwindcss },
-      { name: "Framer Motion", icon: SiFramer },
-    ],
-  },
-  {
-    number: "02",
-    label: "Tooling & UX",
-    accent: "amber",
-    items: [
-      { name: "Postman", icon: SiPostman },
-      { name: "Git", icon: SiGit },
-      { name: "GitHub", icon: FaGithub },
-      { name: "VS Code", icon: FaLaptopCode },
-      { name: "Figma", icon: FaFigma },
-      { name: "EmailJS", icon: FaEnvelope },
-      { name: "Google Maps", icon: SiGooglemaps },
-      { name: "UI Design", icon: FaPalette },
-      { name: "Visual Hierarchy", icon: FaColumns },
-      { name: "Image Optimization", icon: FaImage },
-      { name: "Lazy Loading", icon: FaHourglassHalf },
-      { name: "GPU Animation", icon: FaMicrochip },
-      { name: "Accessibility", icon: FaUniversalAccess },
-    ],
-  },
-];
+    {
+      number: "01",
+      label: "Stack",
+      accent: "orange",
+      items: [
+        { name: "HTML5", icon: FaHtml5 },
+        { name: "CSS3", icon: FaCss3Alt },
+        { name: "JavaScript", icon: SiJavascript },
+        { name: "TypeScript", icon: SiTypescript },
+        { name: "Python", icon: FaPython },
+        { name: "C# / .NET", icon: SiDotnet },
+        { name: "React", icon: SiReact },
+        { name: "Next.js", icon: SiNextdotjs },
+        { name: "Vue.js", icon: SiVuedotjs },
+        { name: "Vite", icon: SiVite },
+        { name: "Node.js", icon: SiNodedotjs },
+        { name: "Tailwind CSS", icon: SiTailwindcss },
+        { name: "Framer Motion", icon: SiFramer },
+      ],
+    },
+    {
+      number: "02",
+      label: "Tooling & UX",
+      accent: "amber",
+      items: [
+        { name: "Postman", icon: SiPostman },
+        { name: "Git", icon: SiGit },
+        { name: "GitHub", icon: FaGithub },
+        { name: "VS Code", icon: FaLaptopCode },
+        { name: "Figma", icon: FaFigma },
+        { name: "EmailJS", icon: FaEnvelope },
+        { name: "Google Maps", icon: SiGooglemaps },
+        { name: "UI Design", icon: FaPalette },
+        { name: "Visual Hierarchy", icon: FaColumns },
+        { name: "Image Optimization", icon: FaImage },
+        { name: "Lazy Loading", icon: FaHourglassHalf },
+        { name: "GPU Animation", icon: FaMicrochip },
+        { name: "Accessibility", icon: FaUniversalAccess },
+      ],
+    },
+  ];
 
 export const SCHOOLS: School[] = [
   {
@@ -238,7 +238,7 @@ export const EXPERIENCES = [
   {
     period: "2026",
     role: "Project Manager",
-    company: "PPLG One",
+    company: "XI RPL",
     description:
       "Developed an internal class management system with attendance, scheduling, and grading modules. Managed a small dev team of 3 junior developers.",
   },
@@ -248,6 +248,27 @@ export const EXPERIENCES = [
     company: "Lumos",
     description:
       "Designed and built a futuristic, visually immersive web experience showcasing modern UI design, smooth animations, and interactive features. Developed both frontend and backend systems to deliver a seamless, high-performance digital product.",
+  },
+];
+
+export const ACHIEVEMENTS = [
+  {
+    project: "Carify",
+    description: "Panduan Cek Mobil",
+    rank: 3,
+    medal: "bronze",
+    competition: "Kreativitas dan Inovasi Masyarakat (Krenova)",
+    scope: "Kabupaten Batang",
+    year: "2026",
+  },
+  {
+    project: "TAMENG",
+    description: "Technology Agricultural Mechanized Environmental Guard",
+    rank: 2,
+    medal: "silver",
+    competition: "Internet of Things (IoT) — Elektro Expo Polines",
+    scope: "Nasional",
+    year: "2026",
   },
 ];
 
@@ -392,7 +413,7 @@ export const PROJECTS = [
     accentColor: "rgba(139,92,246,0.45)",
     categories: ["all", "web", "platform", "pm"],
     tags: ["Node.js", "PostgreSQL", "Web App"],
-    name: "PPLG One",
+    name: "XI RPL",
     description:
       "A sleek, all-in-one classroom management system built for PPLG (Software and Game Development) vocational programs. Simplifies daily academic workflows with integrated tools for attendance, assignments, scheduling, announcements, and student data — helping teachers and students stay organized, connected, and focused on what matters most.",
     demoUrl: "https://pplgone.vercel.app",
